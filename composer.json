@@ -1,0 +1,24 @@
+{
+  "name": "greeninvoice/greeninvoice",
+  "description": "Green Invoice SDK",
+  "keywords": [
+    "greeninvoice",
+    "green invoice",
+    "invoice"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Mordi Sacks"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "GreenInvoice\\": "src/GreenInvoice"
+    }
+  },
+  "require": {
+    "guzzlehttp/guzzle": "^7.2",
+    "symfony/var-dumper": "^5.2"
+  }
+}
