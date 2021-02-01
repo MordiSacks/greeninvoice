@@ -24,11 +24,10 @@ date_default_timezone_set('Asia/Jerusalem');
 require __DIR__ . '/../vendor/autoload.php';
 
 // Copy config.example.php to config.php and set you configuration
-$config = require __DIR__. '/config.php';
+$config = require __DIR__ . '/config.php';
 
 $gi = new Api($config['url'], $config['api_key'], $config['api_secret']);
 
-/** @noinspection PhpVoidFunctionResultUsedInspection */
 $request = $gi->documents
     ->addDocument()
     ->setDescription('This my description')
@@ -91,6 +90,8 @@ $request = $gi->documents
     //->setLinkedDocumentIds()
     //->setLinkedPaymentId()
     //->setLinkType()
-    ->execute();
+;
 
-dd();
+$response = $request->execute();
+
+dd($response, 'yes');

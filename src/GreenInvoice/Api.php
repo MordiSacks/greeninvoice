@@ -2,6 +2,7 @@
 
 namespace GreenInvoice;
 
+use GreenInvoice\Exceptions\ApiErrorException;
 use GreenInvoice\Requests\RequestAbstract;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
@@ -77,6 +78,14 @@ class Api
         return new $fqcn($this);
     }
 
+    /**
+     * @param RequestAbstract $request
+     * @param int             $attempt
+     *
+     * @return mixed
+     * @throws ApiErrorException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function execute(RequestAbstract $request, int $attempt = 0)
     {
         $requestBody = static::dropNullsRecursive($request->toArray());
@@ -97,14 +106,13 @@ class Api
 
                 return $this->execute($request, $attempt++);
             }
-
-            dd(json_decode($e->getResponse()->getBody()->getContents()), $requestBody, json_encode($requestBody));
-            throw $e;
+            $response = json_decode($e->getResponse()->getBody()->getContents(), true);
+            throw new ApiErrorException($e, $response['errorMessage'], $response['errorCode']);
         } catch (\Exception $e) {
             throw $e;
         }
 
-        dd(json_decode($response->getBody()->getContents(), true));
+        return json_decode($response->getBody()->getContents(), true);
     }
 
     private static function dropNullsRecursive(array $array)
